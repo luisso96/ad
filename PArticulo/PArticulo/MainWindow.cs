@@ -3,13 +3,12 @@ using System.Data;
 using System.Collections;
 using System.Collections.Generic;
 using Gtk;
-using PArticulo;
+using SerpisAd;
 
 public partial class MainWindow: Gtk.Window
 {	
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
-
 		Build ();
 		Console.WriteLine ("MainWindow ctor.");
 		QueryResult queryResult = PersisterHelper.Get ("select *from articulo");

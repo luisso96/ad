@@ -1,8 +1,7 @@
 using System;
 using System.Data;
-using MySql.Data.MySqlClient;
 
-namespace PArticulo
+namespace SerpisAd
 {
 	public class App
 	{
@@ -17,13 +16,11 @@ namespace PArticulo
 		private IDbConnection dbConnection;
 		public IDbConnection DbConnection{
 			get { 
-				if (dbConnection == null) {
-					dbConnection = new MySqlConnection ("Database=dbprueba;Data Source=localhost;User Id=root;Password=sistemas");
-					dbConnection.Open ();
-				}
 				return dbConnection;
+				}
+			set{
+				dbConnection = value;
 			}
-
 		}
 
 	}
