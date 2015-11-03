@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PArticulo", "PArticulo\PArticulo.csproj", "{78CB8492-AF50-4637-B8B3-AAF670A190E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSerpisAd", "..\PSerpisAd\PSerpisAd\PSerpisAd.csproj", "{AACB0FFF-D838-467F-9D91-42364005E334}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,6 +15,10 @@ Global
 		{78CB8492-AF50-4637-B8B3-AAF670A190E9}.Debug|x86.Build.0 = Debug|x86
 		{78CB8492-AF50-4637-B8B3-AAF670A190E9}.Release|x86.ActiveCfg = Release|x86
 		{78CB8492-AF50-4637-B8B3-AAF670A190E9}.Release|x86.Build.0 = Release|x86
+		{AACB0FFF-D838-467F-9D91-42364005E334}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AACB0FFF-D838-467F-9D91-42364005E334}.Debug|x86.Build.0 = Debug|Any CPU
+		{AACB0FFF-D838-467F-9D91-42364005E334}.Release|x86.ActiveCfg = Release|Any CPU
+		{AACB0FFF-D838-467F-9D91-42364005E334}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = PArticulo\PArticulo.csproj
