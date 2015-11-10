@@ -12,8 +12,7 @@ public partial class MainWindow: Gtk.Window
 	{
 		Build ();
 		Console.WriteLine ("MainWindow ctor.");
-		QueryResult queryResult = PersisterHelper.Get ("select *from articulo");
-		TreeViewHelper.Fill (treeView, queryResult);
+		fillTreeView ();
 	}
 
 	/**private string [] getColumnName(IDataReader dataReader){
@@ -47,5 +46,15 @@ public partial class MainWindow: Gtk.Window
 	protected void OnNewActionActivated (object sender, EventArgs e)
 	{
 		new ArticuloView ();
+	}
+
+	protected void OnRefreshActionActivated (object sender, EventArgs e)
+	{
+		fillTreeView ();
+	}
+
+	private void fillTreeView (){
+		QueryResult queryResult = PersisterHelper.Get ("select *from articulo");
+		TreeViewHelper.Fill (treeView, queryResult);
 	}
 }

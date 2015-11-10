@@ -46,6 +46,8 @@
     <Compile Include="PersisterHelper.cs" />
     <Compile Include="QueryResult.cs" />
     <Compile Include="TreeViewHelper.cs" />
+    <Compile Include="ComboBoxHelper.cs" />
+    <Compile Include="DbCommandHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

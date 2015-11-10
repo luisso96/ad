@@ -29,28 +29,17 @@ namespace PArticulo
 
 
 			string nombre = entryNombre.Text;
-			object categoria = GetId (comboBoxCategoria); //TODO Cogerlo del combobox
+			object categoria = ComboBoxHelper.GetId (comboBoxCategoria); //TODO Cogerlo del combobox
 			decimal precio = Convert.ToDecimal (spinButtonPrecio.Value); 
 
-			addParameter (dbCommand,"nombre",nombre);
-			addParameter (dbCommand,"categoria",categoria);
-			addParameter (dbCommand,"precio",precio);
+			DbCommandHelper.AddParameter (dbCommand,"nombre",nombre);
+			DbCommandHelper.AddParameter (dbCommand,"categoria",categoria);
+			DbCommandHelper.AddParameter (dbCommand,"precio",precio);
 			dbCommand.ExecuteNonQuery ();
 		}
 
-		private static void addParameter (IDbCommand dbCommand, string name, object value) {
-			IDbDataParameter dbDataParameter = dbCommand.CreateParameter ();
-			dbDataParameter.ParameterName = name;
-			dbDataParameter.Value = value;
-			dbCommand.Parameters.Add (dbDataParameter);
-		}
 
-		public static object GetId (ComboBox comboBox){
-			TreeIter treeIter;
-			comboBox.GetActiveIter (out treeIter);
-			IList row = (IList)comboBox.Model.GetValue (treeIter, 0);
-			return row [0];
-		}
+
 	}
 }
 
