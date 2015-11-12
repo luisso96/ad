@@ -11,8 +11,36 @@ public partial class MainWindow: Gtk.Window
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
+		Title = "Articulo";
 		Console.WriteLine ("MainWindow ctor.");
 		fillTreeView ();
+
+		deleteAction.Activated += delegate {
+			object id = TreeViewHelper.GetId(treeView);
+			Console.WriteLine("Click en deleteAction id={0}", id);
+			delete(id);
+		};
+		treeView.Selection.Changed += delegate {
+			Console.WriteLine("Han ocurrido treeView.Selection.Changed");
+			deleteAction.Sensitive = TreeViewHelper.IsSelected(treeView);
+	};
+	}
+	private void delete (object id) {
+		if (ConfirmDelete (this))
+			Console.WriteLine ("Elimina");
+	}
+
+	private bool ConfirmDelete (Window window) {
+		MessageDialog messageDialog = new MessageDialog (window,	//Ventana de la que nace
+		                                                 DialogFlags.DestroyWithParent,	//Si se elimina la ventana padre se eliminara
+		                                                 MessageType.Question,		//Tipo de ventana
+		                                                 ButtonsType.YesNo,			//Tipo de botones
+		                                                 "¿Seguro que quieres eliminar el elemento seleccionado?");
+
+		messageDialog.Title = Title;
+		ResponseType response = (ResponseType)messageDialog.Run();
+		messageDialog.Destroy ();
+		return response == ResponseType.Yes;
 	}
 
 	/**private string [] getColumnName(IDataReader dataReader){
@@ -43,6 +71,9 @@ public partial class MainWindow: Gtk.Window
 		Application.Quit ();
 		a.RetVal = true;
 	}
+
+
+
 	protected void OnNewActionActivated (object sender, EventArgs e)
 	{
 		new ArticuloView ();
@@ -57,4 +88,7 @@ public partial class MainWindow: Gtk.Window
 		QueryResult queryResult = PersisterHelper.Get ("select *from articulo");
 		TreeViewHelper.Fill (treeView, queryResult);
 	}
+
+
+
 }
