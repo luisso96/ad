@@ -20,40 +20,31 @@ public partial class MainWindow: Gtk.Window
 			Console.WriteLine("Click en deleteAction id={0}", id);
 			delete(id);
 		};
+
+		editAction.Activated += delegate {
+			object id = TreeViewHelper.GetId(treeView);
+
+			new ArticuloView(id);
+
+		};
+
 		treeView.Selection.Changed += delegate {
 			Console.WriteLine("Han ocurrido treeView.Selection.Changed");
-			deleteAction.Sensitive = TreeViewHelper.IsSelected(treeView);
-	};
+			bool isSelected = TreeViewHelper.IsSelected(treeView);
+			deleteAction.Sensitive = isSelected;
+			editAction.Sensitive = isSelected;
+		};
 	}
 	private void delete (object id) {
-		if (WindowHelper.ConfirmDelete (this))
-			Console.WriteLine ("Elimina");
+		if (!WindowHelper.ConfirmDelete (this))
+			return;
+		IDbCommand dbCommand = App.Instance.DbConnection.CreateCommand ();
+		dbCommand.CommandText = "delete from articulo where id = @id";
+		DbCommandHelper.AddParameter (dbCommand, "id", id);
+		dbCommand.ExecuteNonQuery ();
+
+			
 	}
-
-
-
-	/**private string [] getColumnName(IDataReader dataReader){
-		List<string> columnName = new List<string> ();
-		int count = dataReader.FieldCount;
-		for (int i = 0; i < count; i++)
-			columnName.Add (dataReader.GetName (i));
-		return columnName.ToArray ();
-	}**/
-
-	/**private Type[] getTypes (int count) {
-		List<Type> types = new List<Type> ();
-		for (int i = 0; i < count; i++)
-			types.Add (typeof(string));
-		return types.ToArray ();
-	}
-
-	private string [] getValues(IDataReader mysqlDataReader) {
-		List<object> values = new List<object> ();
-		int count = mysqlDataReader.FieldCount;
-		for (int i = 0; i <count; i++)
-			values.Add (mysqlDataReader [i].ToString ());
-		return values.ToArray ();
-	}**/
 
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 	{
