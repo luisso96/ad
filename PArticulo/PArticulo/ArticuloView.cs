@@ -6,24 +6,37 @@ using SerpisAd;
 
 namespace PArticulo
 {
+	public delegate void SaveDelegate();
 	public partial class ArticuloView : Gtk.Window
 	{
-		private object id;
-		private object categoria;
-		public ArticuloView () : 
-				base(Gtk.WindowType.Toplevel)
-		{
-			this.Build ();
-		
-			QueryResult queryResult = PersisterHelper.Get ("select * from categoria");
-			ComboBoxHelper.Fill (comboBoxCategoria, queryResult, categoria);
+		private object id = null;
+		private object categoria = null;
+		private string nombre = "";
+		private decimal precio = 0;
+		private SaveDelegate save;
 
-			saveAction.Activated += delegate {save();};
+		public ArticuloView () : base(Gtk.WindowType.Toplevel)
+		{
+
+			init ();
+			save = insert;
+
 		}
 
-		public ArticuloView(object id) : this() {
+		public ArticuloView(object id) : base(WindowType.Toplevel){
 			this.id = id;
 			load ();
+			init ();
+			save = update;
+		}
+
+		private void init () {
+			this.Build ();
+			entryNombre.Text = nombre;
+			QueryResult queryResult = PersisterHelper.Get ("select * from categoria");
+			ComboBoxHelper.Fill (comboBoxCategoria, queryResult, categoria);
+			spinButtonPrecio.Value = Convert.ToDouble (precio);
+			saveAction.Activated += delegate {save();};
 		}
 
 		private void load () {
@@ -34,27 +47,24 @@ namespace PArticulo
 			if (! dataReader.Read ())
 				//TODO throw exception
 				return;
-			string nombre = (string)dataReader["nombre"];
-			object categoria = dataReader["categoria"];
-			decimal precio = (decimal)dataReader["precio"];
+			nombre = (string)dataReader["nombre"];
+			categoria = dataReader["categoria"];
+			if (categoria is DBNull)
+				categoria = null;
+			precio = (decimal)dataReader["precio"];
 			dataReader.Close ();
-			entryNombre.Text = nombre;
-
-			spinButtonPrecio.Value = Convert.ToDouble (precio);
-
-
 		}
 
-		private void save () {
+		private void insert() {
 			IDbCommand dbCommand = App.Instance.DbConnection.CreateCommand ();
 			dbCommand.CommandText = "insert into articulo (nombre,categoria,precio) " +
 				"values (@nombre, @categoria, @precio)";
 
 
 
-			string nombre = entryNombre.Text;
-			object categoria = ComboBoxHelper.GetId (comboBoxCategoria); //TODO Cogerlo del combobox
-			decimal precio = Convert.ToDecimal (spinButtonPrecio.Value); 
+			nombre = entryNombre.Text;
+			categoria = ComboBoxHelper.GetId (comboBoxCategoria); //TODO Cogerlo del combobox
+			precio = Convert.ToDecimal (spinButtonPrecio.Value); 
 
 			DbCommandHelper.AddParameter (dbCommand,"nombre",nombre);
 			DbCommandHelper.AddParameter (dbCommand,"categoria",categoria);
@@ -63,6 +73,9 @@ namespace PArticulo
 			Destroy ();
 		}
 
+		private void update () {
+
+		}
 
 
 	}
