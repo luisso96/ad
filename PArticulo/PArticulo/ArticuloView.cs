@@ -9,37 +9,42 @@ namespace PArticulo
 	public delegate void SaveDelegate();
 	public partial class ArticuloView : Gtk.Window
 	{
-		private object id = null;
-		private object categoria = null;
-		private string nombre = "";
-		private decimal precio = 0;
+
+		//private object id = null;
+		//private object categoria = null;
+		//private string nombre = "";
+		//private decimal precio = 0;
+
+		private Articulo articulo = new Articulo();
+
 		private SaveDelegate save;
 
 		public ArticuloView () : base(Gtk.WindowType.Toplevel)
 		{
 
 			init ();
-			save = insert;
+			saveAction.Activated += delegate { insert(); };
 
 		}
 
 		public ArticuloView(object id) : base(WindowType.Toplevel){
-			this.id = id;
-			load ();
+			//this.id = id;
+			articulo = ArticuloPersister.Load(id);
 			init ();
-			save = update;
+			ArticuloPersister.Insert(articulo);
+			saveAction.Activated += delegate { update(); };
 		}
 
 		private void init () {
 			this.Build ();
-			entryNombre.Text = nombre;
+			entryNombre.Text = articulo.Nombre;
 			QueryResult queryResult = PersisterHelper.Get ("select * from categoria");
-			ComboBoxHelper.Fill (comboBoxCategoria, queryResult, categoria);
-			spinButtonPrecio.Value = Convert.ToDouble (precio);
-			saveAction.Activated += delegate {save();};
+			ComboBoxHelper.Fill (comboBoxCategoria, queryResult, articulo.Categoria);
+			spinButtonPrecio.Value = Convert.ToDouble (articulo.Precio);
+			//saveAction.Activated += delegate {save();};
 		}
 
-		private void load () {
+		/*private void load () {
 			IDbCommand dbCommand = App.Instance.DbConnection.CreateCommand ();
 			dbCommand.CommandText = "select * from articulo where id = @id";
 			DbCommandHelper.AddParameter (dbCommand, "id", id);
@@ -53,7 +58,7 @@ namespace PArticulo
 				categoria = null;
 			precio = (decimal)dataReader["precio"];
 			dataReader.Close ();
-		}
+		}*/
 
 		private void insert() {
 			IDbCommand dbCommand = App.Instance.DbConnection.CreateCommand ();
