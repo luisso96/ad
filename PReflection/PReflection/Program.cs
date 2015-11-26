@@ -47,8 +47,9 @@ namespace PReflection
 		private static void setValues (object obj, object[] values){
 			Type type = obj.GetType ();
 			PropertyInfo[] propertyInfos = type.GetProperties ();
+			int index = 0;
 			foreach (PropertyInfo propertyInfo in propertyInfos) {
-				propertyInfo.SetValue (obj, values [i++], null);
+				propertyInfo.SetValue (obj, values [index++], null);
 			}
 		}
 }
