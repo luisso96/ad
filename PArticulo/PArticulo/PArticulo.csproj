@@ -82,4 +82,10 @@
     <Compile Include="ArticuloPersister.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\PSerpisAd\PSerpisAd\PSerpisAd.csproj">
+      <Project>{AACB0FFF-D838-467F-9D91-42364005E334}</Project>
+      <Name>PSerpisAd</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

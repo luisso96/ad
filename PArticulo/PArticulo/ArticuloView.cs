@@ -31,7 +31,7 @@ namespace PArticulo
 			//this.id = id;
 			articulo = ArticuloPersister.Load(id);
 			init ();
-			ArticuloPersister.Insert(articulo);
+			ArticuloPersister.Insert(articulo,entryNombre,comboBoxCategoria,spinButtonPrecio);
 			saveAction.Activated += delegate { update(); };
 		}
 
@@ -60,7 +60,7 @@ namespace PArticulo
 			dataReader.Close ();
 		}*/
 
-		private void insert() {
+		/*private void insert() {
 			IDbCommand dbCommand = App.Instance.DbConnection.CreateCommand ();
 			dbCommand.CommandText = "insert into articulo (nombre,categoria,precio) " +
 				"values (@nombre, @categoria, @precio)";
@@ -76,7 +76,7 @@ namespace PArticulo
 			DbCommandHelper.AddParameter (dbCommand,"precio",precio);
 			dbCommand.ExecuteNonQuery ();
 			Destroy ();
-		}
+		}*/
 
 		private void update () {
 

@@ -1,6 +1,8 @@
 using System;
 using System.Data;
 using SerpisAd;
+using Gtk;
+using System.Collections;
 
 namespace PArticulo
 {
@@ -10,7 +12,7 @@ namespace PArticulo
 		public static Articulo Load(object id) {
 			Articulo articulo = new Articulo();
 			articulo.Id = id;
-			IDbCommand dbCommand = App.Instance.DbConnection.CreateCommand ();
+			IDbCommand dbCommand =App.Instance.DbConnection.CreateCommand ();
 			dbCommand.CommandText = "select * from articulo where id = @id";
 			DbCommandHelper.AddParameter (dbCommand, "id", id);
 			IDataReader dataReader = dbCommand.ExecuteReader ();
@@ -22,7 +24,7 @@ namespace PArticulo
 			return articulo;
 		}
 
-		public static Articulo Insert(Articulo articulo) {
+		public static Articulo Insert(Articulo articulo, Entry entryNombre, ComboBox comboBoxCategoria, SpinButton spinButtonPrecio) {
 			IDbCommand dbCommand = App.Instance.DbConnection.CreateCommand ();
 			dbCommand.CommandText = "insert into articulo (nombre,categoria,precio) " +
 				"values (@nombre, @categoria, @precio)";
