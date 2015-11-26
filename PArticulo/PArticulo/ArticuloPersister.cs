@@ -33,9 +33,9 @@ namespace PArticulo
 			Articulo.Categoria = ComboBoxHelper.GetId (comboBoxCategoria); //TODO Cogerlo del combobox
 			Articulo.Precio = Convert.ToDecimal (spinButtonPrecio.Value); 
 
-			DbCommandHelper.AddParameter (dbCommand,"nombre",nombre);
-			DbCommandHelper.AddParameter (dbCommand,"categoria",categoria);
-			DbCommandHelper.AddParameter (dbCommand,"precio",precio);
+			DbCommandHelper.AddParameter (dbCommand,"nombre",Articulo.Nombre);
+			DbCommandHelper.AddParameter (dbCommand,"categoria",Articulo.Categoria);
+			DbCommandHelper.AddParameter (dbCommand,"precio",Articulo.Precio);
 			dbCommand.ExecuteNonQuery ();
 		}
 
