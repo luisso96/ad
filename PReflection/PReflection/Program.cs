@@ -39,9 +39,16 @@ namespace PReflection
 	}
 		private static void showObject(object obj){
 			Type type = obj.GetType ();
+			if (!(type is Attribute)) {
+				object[] attributes = type.GetCustomAttributes (true);
+				foreach (Attribute attribute in attributes)
+					showObject (attribute);
+			}
 			PropertyInfo[] propertyInfos = type.GetProperties ();
 			foreach (PropertyInfo propertyInfo in propertyInfos) {
-				Console.WriteLine ("{0}={1}", propertyInfo.Name, propertyInfo.GetValue (obj,null));
+				if (propertyInfo.IsDefined(typeof(IdAttribute),true));
+						Console.WriteLine ("{0} A sido decorado con IdAttribute", propertyInfo.Name);
+					Console.WriteLine ("{0}={1}", propertyInfo.Name, propertyInfo.GetValue (obj,null));
 			}
 		}
 		private static void setValues (object obj, object[] values){
@@ -53,6 +60,13 @@ namespace PReflection
 			}
 		}
 }
+		public class IdAttribute : Attribute {
+
+	}
+
+		public class TableAttribute : Attribute {
+
+		}
 
 		public class Foo{
 
@@ -70,7 +84,7 @@ namespace PReflection
 				set{name = value;}
 		}
 	}
-
+	[Table(Name = "articulo")]
 	public class Articulo
 	{
 		public Articulo ()
@@ -82,6 +96,7 @@ namespace PReflection
 		private object categoria;
 		private decimal precio;
 
+		[Id]
 		public object Id {
 			get { return id;}
 			set {id = value;}

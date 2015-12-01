@@ -17,32 +17,41 @@ namespace PArticulo
 			DbCommandHelper.AddParameter (dbCommand, "id", id);
 			IDataReader dataReader = dbCommand.ExecuteReader ();
 			articulo.Nombre = (string)dataReader["nombre"];
-			articulo.Categoria = dataReader["categoria"];
-			if (articulo.Categoria is DBNull)
-				articulo.Categoria = null;
-			articulo.Precio = (decimal)dataReader["precio"];
+			articulo.Categoria = get (dataReader ["categoria"], null);
+			articulo.Precio = (decimal)get(dataReader["precio"], 0L);
+			dataReader.Close ();
 			return articulo;
 		}
 
-		public static Articulo Insert(Articulo articulo, Entry entryNombre, ComboBox comboBoxCategoria, SpinButton spinButtonPrecio) {
+		private static object get (object value, object defaultValue){
+			return value is DBNull ? defaultValue : value;
+		}
+
+		public static int Insert(Articulo articulo) {
 			IDbCommand dbCommand = App.Instance.DbConnection.CreateCommand ();
 			dbCommand.CommandText = "insert into articulo (nombre,categoria,precio) " +
 				"values (@nombre, @categoria, @precio)";
 
-
-
-			Articulo.Nombre = entryNombre.Text;
-			Articulo.Categoria = ComboBoxHelper.GetId (comboBoxCategoria); //TODO Cogerlo del combobox
-			Articulo.Precio = Convert.ToDecimal (spinButtonPrecio.Value); 
-
-			DbCommandHelper.AddParameter (dbCommand,"nombre",Articulo.Nombre);
-			DbCommandHelper.AddParameter (dbCommand,"categoria",Articulo.Categoria);
-			DbCommandHelper.AddParameter (dbCommand,"precio",Articulo.Precio);
-			dbCommand.ExecuteNonQuery ();
+			DbCommandHelper.AddParameter (dbCommand,"nombre",articulo.Nombre);
+			DbCommandHelper.AddParameter (dbCommand,"categoria",articulo.Categoria);
+			DbCommandHelper.AddParameter (dbCommand,"precio",articulo.Precio);
+			return dbCommand.ExecuteNonQuery ();
 		}
 
-		public static Articulo Update(Articulo articulo) {
+		public static int Update(Articulo articulo) {
+			IDbCommand dbCommand = App.Instance.DbConnection.CreateCommand ();
+			dbCommand.CommandText = "update articulo set nombre = @nombre, " +
+				"categoria = @categoria, precio = @precio where id = @id";
 
+			DbCommandHelper.AddParameter (dbCommand,"nombre",articulo.Nombre);
+			DbCommandHelper.AddParameter (dbCommand,"categoria",articulo.Categoria);
+			DbCommandHelper.AddParameter (dbCommand,"precio",articulo.Precio);
+			DbCommandHelper.AddParameter (dbCommand,"id",articulo.Id);
+			return dbCommand.ExecuteNonQuery ();
+		}
+
+		public static int Save (Articulo articulo) {
+			return articulo.Id == null ? Insert (articulo) : Update (articulo);
 		}
 	}
 }

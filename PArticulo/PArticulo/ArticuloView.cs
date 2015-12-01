@@ -17,8 +17,6 @@ namespace PArticulo
 
 		private Articulo articulo = new Articulo();
 
-		private SaveDelegate save;
-
 		public ArticuloView () : base(Gtk.WindowType.Toplevel)
 		{
 
@@ -31,7 +29,7 @@ namespace PArticulo
 			//this.id = id;
 			articulo = ArticuloPersister.Load(id);
 			init ();
-			ArticuloPersister.Insert(articulo,entryNombre,comboBoxCategoria,spinButtonPrecio);
+			insert();
 			saveAction.Activated += delegate { update(); };
 		}
 
@@ -77,9 +75,21 @@ namespace PArticulo
 			dbCommand.ExecuteNonQuery ();
 			Destroy ();
 		}*/
+		private void insert() {
+			articulo.Nombre = entryNombre.Text;
+			articulo.Categoria = ComboBoxHelper.GetId (comboBoxCategoria); //TODO Cogerlo del combobox
+			articulo.Precio = Convert.ToDecimal (spinButtonPrecio.Value);
+			ArticuloPersister.Insert(articulo);
+			Destroy ();
+
+		}
 
 		private void update () {
-
+			articulo.Nombre = entryNombre.Text;
+			articulo.Categoria = ComboBoxHelper.GetId (comboBoxCategoria);
+			articulo.Precio = Convert.ToDecimal(spinButtonPrecio.Value);
+			ArticuloPersister.Update(articulo);
+			Destroy ();
 		}
 
 
