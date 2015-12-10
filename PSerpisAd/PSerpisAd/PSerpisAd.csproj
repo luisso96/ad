@@ -49,6 +49,7 @@
     <Compile Include="ComboBoxHelper.cs" />
     <Compile Include="DbCommandHelper.cs" />
     <Compile Include="WindowHelper.cs" />
+    <Compile Include="Persister.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

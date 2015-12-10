@@ -75,20 +75,20 @@ namespace PArticulo
 			dbCommand.ExecuteNonQuery ();
 			Destroy ();
 		}*/
-		private void insert() {
-			articulo.Nombre = entryNombre.Text;
-			articulo.Categoria = ComboBoxHelper.GetId (comboBoxCategoria); //TODO Cogerlo del combobox
-			articulo.Precio = Convert.ToDecimal (spinButtonPrecio.Value);
-			ArticuloPersister.Insert(articulo);
-			Destroy ();
-
-		}
-
-		private void update () {
+		private void updateModel() {
 			articulo.Nombre = entryNombre.Text;
 			articulo.Categoria = ComboBoxHelper.GetId (comboBoxCategoria);
 			articulo.Precio = Convert.ToDecimal(spinButtonPrecio.Value);
-			ArticuloPersister.Update(articulo);
+		}
+		private void insert() {
+			updateModel ();
+			Persister.Insert (articulo);
+			Destroy ();
+		}
+
+		private void update() {
+			updateModel ();
+			ArticuloPersister.Update (articulo);
 			Destroy ();
 		}
 

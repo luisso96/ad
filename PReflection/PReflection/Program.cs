@@ -31,60 +31,84 @@ namespace PReflection
 				33L, "nuevo 33 Modificado", 3L, decimal.Parse("33,33")});
 		}
 
-		private static void showType (Type type){
-			Console.WriteLine ("type.Name={0} type.fullName={1} type.BaseType.Name {2}", type.Name, type.FullName, type.BaseType.Name);
+		private static void showType(Type type) {
+			Console.WriteLine ("type.Name={0} type.FullName={1} type.BaseType.Name={2}", 
+			                   type.Name, type.FullName, type.BaseType.Name);
 			PropertyInfo[] propertyInfos = type.GetProperties ();
 			foreach (PropertyInfo propertyInfo in propertyInfos)
-				Console.WriteLine ("propertyInfo.Name={0} propertyinfo.PropertyType={1}", propertyInfo.Name, propertyInfo.PropertyType);
-	}
-		private static void showObject(object obj){
+				Console.WriteLine ("propertyInfo.Name={0} propertyInfo.PropertyType={1}", 
+				                   propertyInfo.Name, propertyInfo.PropertyType);
+		}
+
+		private static void showObject(object obj) {
 			Type type = obj.GetType ();
-			if (!(type is Attribute)) {
+			if (!(obj is Attribute)) {
 				object[] attributes = type.GetCustomAttributes (true);
 				foreach (Attribute attribute in attributes)
 					showObject (attribute);
 			}
 			PropertyInfo[] propertyInfos = type.GetProperties ();
 			foreach (PropertyInfo propertyInfo in propertyInfos) {
-				if (propertyInfo.IsDefined(typeof(IdAttribute),true));
-						Console.WriteLine ("{0} A sido decorado con IdAttribute", propertyInfo.Name);
-					Console.WriteLine ("{0}={1}", propertyInfo.Name, propertyInfo.GetValue (obj,null));
+				if (propertyInfo.IsDefined (typeof(IdAttribute), true)) 
+					Console.WriteLine ("{0} decorado con IdAttribute", propertyInfo.Name);
+				Console.WriteLine ("{0}={1}", 
+				                   propertyInfo.Name, propertyInfo.GetValue (obj, null));
 			}
 		}
-		private static void setValues (object obj, object[] values){
+
+		private static void setValues(object obj, object[] values) {
 			Type type = obj.GetType ();
 			PropertyInfo[] propertyInfos = type.GetProperties ();
 			int index = 0;
-			foreach (PropertyInfo propertyInfo in propertyInfos) {
+			foreach (PropertyInfo propertyInfo in propertyInfos) 
 				propertyInfo.SetValue (obj, values [index++], null);
+
+		}
+	}
+
+	public class IdAttribute : Attribute {
+	}
+
+	public class TableAttribute : Attribute {
+		private string name;
+
+		public string Name {
+			get {
+				return name;
+			}
+			set {
+				name = value;
 			}
 		}
-}
-		public class IdAttribute : Attribute {
+	}
+
+	public class Foo {
+		private object id;
+
+		public object Id {
+			get {
+				return id;
+			}
+			set {
+				id = value;
+			}
+		}
+
+		private string name;
+
+		public string Name {
+			get {
+				return name;
+			}
+			set {
+				name = value;
+			}
+		}
+
 
 	}
 
-		public class TableAttribute : Attribute {
-
-		}
-
-		public class Foo{
-
-			private object id;
-
-			public object ID {
-				get{return id;}
-			set {id = value;}
-			}
-
-			public string name;
-
-			public string Name{
-				get {return name;}
-				set{name = value;}
-		}
-	}
-	[Table(Name = "articulo")]
+	[Table(Name = "article")]
 	public class Articulo
 	{
 		public Articulo ()
@@ -98,22 +122,41 @@ namespace PReflection
 
 		[Id]
 		public object Id {
-			get { return id;}
-			set {id = value;}
+			get { 
+				return id;
+			}
+			set { 
+				id = value;
+			}
 		}
 
 		public string Nombre {
-			get {return nombre;}
-			set { nombre = value;}
-		}
-		public object Categoria {
-			get {return categoria;}
-			set {categoria = value;}
+			get {
+				return nombre;
+			}
+			set { 
+				nombre = value; 
+			}
 		}
 
+
+		public object Categoria {
+			get {
+				return categoria;
+			}
+			set {
+				categoria = value;
+			}
+		}
+
+
 		public decimal Precio {
-			get {return precio;}
-			set {precio = value;}
+			get {
+				return precio;
+			}
+			set {
+				precio = value;
+			}
 		}
 	}
 }
