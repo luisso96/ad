@@ -15,14 +15,16 @@ public class PruebaArticulo {
 		ResultSet resultset = connection.createStatement().executeQuery(query);
 		ResultSetMetaData resultsetmd = resultset.getMetaData();
 		
-			for (int i = 1; i < resultsetmd.getColumnCount()+1; i++) {
-				System.out.print(resultsetmd.getColumnName(i)+"\t"+"\t");
+			for (int i = 1; i <= resultsetmd.getColumnCount(); i++) {
+				System.out.printf("%-12s",resultsetmd.getColumnName(i));
+				//System.out.print(resultsetmd.getColumnName(i)+"\t"+"\t");
 			}
 		
 	       while (resultset.next()) {
 	    	   System.out.println("");
-	    	   for (int i = 1; i < resultsetmd.getColumnCount()+1; i++) {
-	    		   System.out.print(resultset.getString(i)+"\t"+"\t");
+	    	   for (int i = 1; i <= resultsetmd.getColumnCount(); i++) {
+	    		   System.out.printf("%-12s",resultset.getString(i));
+	    		   //System.out.print(resultset.getString(i)+"\t"+"\t");
 			}
 	       }
 		
